@@ -42,7 +42,7 @@ class Circle(Point):
         return math.pi * (self.radius ** 2)
 
     def __sub__(self, other):
-        if (abs(self.radius) - abs(other.radius)) == 0:
+        if self.radius - other.radius == 0:
             return Point(self.x - other.x, self.y - other.y)
         else:
             return Circle(self.x - other.x, self.y - other.y, abs(self.radius) - abs(other.radius))
