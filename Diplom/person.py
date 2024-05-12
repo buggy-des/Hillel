@@ -20,6 +20,8 @@ class Person:
             return '-'
 
     def date_format(self, date_str: str):
+        if not date_str:
+            return None
         for frmt in ("%Y-%m-%d", "%d.%m.%Y", "%d/%m/%Y", "%d %m %Y"):
             try:
                 return datetime.datetime.strptime(date_str, frmt)
@@ -28,9 +30,13 @@ class Person:
         raise ValueError(f"Невiрний формат дати {date_str}")
 
     def full_years(self):
-        if self.date_of_death:
-            return (self.date_of_death - self.date_of_birth).days // 365
-        return (datetime.datetime.now() - self.date_of_birth).days // 365
+        if not self.date_of_birth:
+            raise ValueError("Дата народження обов'язкова для введення!")
+        death_or_now = self.date_of_death or datetime.datetime.now().date()
+        age = death_or_now.year - self.date_of_birth.year
+        if (death_or_now.month, death_or_now.day) < (self.date_of_birth.month, self.date_of_birth.day):
+            age -= 1
+        return age
 
     def person_info(self):
         return [self.first_name,
@@ -41,3 +47,10 @@ class Person:
                 self.date_of_birth.strftime("%d.%m.%Y"),
                 self.date_of_death.strftime("%d.%m.%Y") if self.date_of_death else '-'
                 ]
+
+    def __str__(self):
+        info = self.person_info()
+        formatted_info = [
+            str(field).center(12) for field in info
+        ]
+        return ' | '.join(formatted_info)
