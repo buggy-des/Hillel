@@ -47,4 +47,4 @@ class PersonData:
             print(f"Помилка збереження файлу {e}, можливо не додано розширення (.xlsx,.xlsm,.xltx,.xltm)")
 
     def __str__(self):
-        return '\n'.join(str(person) for person in self.people)
+        return '\n' + ('-' * 100 + '\n').join(str(person) for person in self.people)
